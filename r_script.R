@@ -1,27 +1,35 @@
 # Exercise #8 
 
 # setwd
-setwd ("/Users/alebron1/homework")
+setwd ("/Users/andrea/Biocomputing2020_Tutorial10")
 # open UWvMSU_1-22-13.txt
 ScoringTable=read.table("UWvMSU_1-22-13.txt", header=TRUE, sep="\t")
 # create dataframe or matrix with the cumulative scores for each team whenever either team scores
 score_time_Table=data.frame(matrix(ncol=3, nrow=0))
 x=c("time", "MSU", "UW")
 colnames(score_time_Table)=x
-
-
+# create variable to save the score for each team
 MSU_score=0
 UW_score=0
-
+# create for loop that will go for as many rows in the table and will add up the scores for each time every time they score
 for (i in 1:nrow(ScoringTable)) {
   if (ScoringTable$team[i]=="UW"){
     UW_score=UW_score+ScoringTable$score[i]
-    newscore_time_Table[(ScoringTable$time[i])
-    
   }
   else {
     MSU_score=MSU_score+ScoringTable$score[i]
   }
+  # create time variable to save the time at which the teams scored; easy way to name column as time
+  time=ScoringTable$time[i]
+  # create data frame with the time and score for each time at that time point
+  time_score=data.frame(time,MSU_score,UW_score)
+  # append the data frame that was already created
+  score_time_Table=rbind(score_time_Table, time_score)
 }
+# create plot with time in the x axis and score in the y axis
+plot=plot(x=score_time_Table$time, y=score_time_Table$MSU_score, type="l", col="black", lwd=1.6, xlab="time", ylab="score")
+# adds the second line 
+lines (x=score_time_Table$time, y=score_time_Table$UW_score, col="blue", lwd=1.6)
+# create legend with the team names and their respective lines
+legend(4,48, legend=c("MSU", "UW"), col=c("black", "blue"), lty=1:10, cex=1.2)
 
-?rbind
